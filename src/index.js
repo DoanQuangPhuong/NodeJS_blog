@@ -4,6 +4,7 @@ const port = 3000;
 const { engine } = require('express-handlebars'); // Đảm bảo import đúng cú pháp
 const path = require('path');
 const handlebars = require('express-handlebars');
+const methodOverride = require('method-override')
 
 //Dòng mã này cho phép bạn phục vụ các tập tin tĩnh trực tiếp từ thư mục public trong ứng dụng Express
 app.use(express.static(path.join(__dirname,'public')))
@@ -15,12 +16,16 @@ app.use(morgan('combined'))
 //express.urlencoded() :Middleware này giúp parse dữ liệu form HTML, cụ thể là với yêu cầu HTTP có phương thức POST và Content-Type là application/x-www-form-urlencoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 
 //Template engine
 app.engine('handlebars', engine({
   extname: '.handlebars', // Thiết lập phần mở rộng file nếu cần thiết, mặc định là .handlebars
   defaultLayout: 'main', // Thiết lập layout mặc định nếu có
+  helpers:{
+    sum :(a,b) => a + b
+  }
 }));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname,'resources/views'));
@@ -32,7 +37,6 @@ route(app);
 //connect db
 const db = require('./config/db');
 db.connect();
-
 
 
 app.listen(port, () => {

@@ -16,9 +16,45 @@ class CourseController{
        res.render('courses/create')
     }
 
-    store(req,res,next)
+    store(req, res, next) {
+        const formData = req.body;
+        formData.image = `https://files.fullstack.edu.vn/f8-prod/courses/2.png`;
+        const course = new Course(formData);
+        course.save()
+            .then(() => res.redirect('/'))
+            .catch(next);  // Pass errors to the next middleware
+    }
+    
+
+    edit(req,res,next)
     {
-      res.json(req.body)
+      Course.findOne({_id:req.params.id})
+            .then(course => res.render('courses/edit', {
+                course : mongooseToOject(course)
+            }))
+            .catch(next)
+    }
+
+    update(req,res,next)
+    {
+      Course.updateOne({_id:req.params.id},req.body)
+            .then(() => res.redirect('/me/store/courses'))
+            .catch(next)
+    }
+
+    delete(req,res,next)
+    {
+        //su dung plugin mongoose-delete
+      Course.delete({_id:req.params.id})
+            .then(() => res.redirect('back'))
+            .catch(next)
+    }
+
+    restore(req,res,next)
+    {
+        Course.restore({_id:req.params.id})
+        .then(() => res.redirect('back'))
+        .catch(next)
     }
 }
 
