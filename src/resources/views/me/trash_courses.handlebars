@@ -20,7 +20,7 @@
                     <td>{{this.level}}</td>
                     <td>{{this.createdAt}}</td>
                     <td>
-                        <a href="">
+                        <a href="#">
                             <button class="btn btn-warning btn-sm mr-1 btn-restore" data-id="{{this._id}}">Khôi Phục</button>
                         </a>
                         <a href="#">
@@ -60,15 +60,12 @@
   </div>
 </div>
 
-<form method="post" name="delete-course-form"></form>
 <form method="post" name="restore-course-form"></form>
-
 <script>
     document.addEventListener('DOMContentLoaded', function(){
         var btnRestore = $('.btn-restore')
         var restoreForm = document.forms['restore-course-form'];
         btnRestore.click(function(e) {
-          e.preventDefault();
           var id = $(this).data('id');
             restoreForm.action = '/courses/' + id + '/restore?_method=PATCH';
             restoreForm.submit();
