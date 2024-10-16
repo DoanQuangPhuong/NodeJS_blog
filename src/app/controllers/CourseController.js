@@ -53,7 +53,7 @@ class CourseController{
     restore(req,res,next)
     {
         Course.restore({_id:req.params.id})
-        .then(() => res.redirect('back'))
+        .then(() => res.redirect('/me/trash/courses'))
         .catch(next)
     }
 }
